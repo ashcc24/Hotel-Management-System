@@ -1,0 +1,30 @@
+# Maven build output
+target/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.eclipse
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Data files (runtime-generated, not source code)
+hotel_data.dat
+hotel_azure_data/
+
+# Antigravity IDE files
+.gemini/

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hotel.management.controllers.DashboardController">
+
+    <!-- ══ TOP HEADER ══════════════════════════════════════════════════════ -->
+    <top>
+        <HBox styleClass="app-header" alignment="CENTER_LEFT" spacing="12">
+            <Label styleClass="app-title" text="🏨  The Sapphire Hotel" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="headerUserLabel" styleClass="header-user" text="Welcome," />
+            <Label fx:id="headerRoleBadge" styleClass="header-role-badge" text="STAFF" />
+            <Button styleClass="btn-secondary" text="🚪  Logout" onAction="#handleLogout"
+                    style="-fx-font-size:12px; -fx-padding: 6 14;" />
+        </HBox>
+    </top>
+
+    <!-- ══ SIDEBAR ═════════════════════════════════════════════════════════ -->
+    <left>
+        <VBox styleClass="sidebar" spacing="2">
+            <Label styleClass="sidebar-section-label" text="NAVIGATION" />
+
+            <Button fx:id="btnNavDashboard"  text="🏠   Dashboard"        onAction="#navDashboard"  styleClass="sidebar-btn" />
+            <Button fx:id="btnNavRooms"      text="🛏️   Rooms"             onAction="#navRooms"      styleClass="sidebar-btn" />
+            <Button fx:id="btnNavCustomers"  text="👤   Customers"         onAction="#navCustomers"  styleClass="sidebar-btn" />
+            <Button fx:id="btnNavBookings"   text="📅   Bookings"          onAction="#navBookings"   styleClass="sidebar-btn" />
+            <Button fx:id="btnNavFood"       text="🍽️   Food Service"      onAction="#navFood"       styleClass="sidebar-btn" />
+            <Button fx:id="btnNavLaundry"    text="👕   Laundry"           onAction="#navLaundry"    styleClass="sidebar-btn" />
+            <Button fx:id="btnNavCheckout"   text="💳   Checkout"          onAction="#navCheckout"   styleClass="sidebar-btn" />
+
+            <Label styleClass="sidebar-section-label" text="MANAGEMENT" />
+
+            <Button fx:id="btnNavAudit"      text="📋   Audit Log"         onAction="#navAudit"      styleClass="sidebar-btn" />
+            <Button fx:id="btnNavStaff"      text="👥   Staff Management"  onAction="#navStaff"      styleClass="sidebar-btn" />
+
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="🚪   Logout" onAction="#handleLogout" styleClass="sidebar-btn-logout" />
+        </VBox>
+    </left>
+
+    <!-- ══ CONTENT AREA ════════════════════════════════════════════════════ -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    style="-fx-background-color:#0d1117; -fx-border-color: transparent;">
+            <StackPane fx:id="contentStack" style="-fx-background-color:#0d1117;">
+
+                <!-- ─── DASHBOARD PANE ─────────────────────────────── -->
+                <VBox fx:id="paneDashboard" styleClass="content-area" spacing="24" visible="true" managed="true">
+                    <Label styleClass="page-title" text="Dashboard" />
+                    <Label styleClass="page-subtitle" text="Overview of hotel operations" />
+
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <VBox styleClass="stat-card" alignment="CENTER" spacing="4">
+                            <Label fx:id="statTotalRooms"    styleClass="stat-number"        text="0" />
+                            <Label styleClass="stat-label"   text="TOTAL ROOMS" />
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" spacing="4">
+                            <Label fx:id="statAvailRooms"    styleClass="stat-number-green"  text="0" />
+                            <Label styleClass="stat-label"   text="AVAILABLE" />
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" spacing="4">
+                            <Label fx:id="statOccupied"      styleClass="stat-number-blue"   text="0" />
+                            <Label styleClass="stat-label"   text="OCCUPIED" />
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" spacing="4">
+                            <Label fx:id="statCustomers"     styleClass="stat-number-purple" text="0" />
+                            <Label styleClass="stat-label"   text="CUSTOMERS" />
+                        </VBox>
+                        <VBox styleClass="stat-card" alignment="CENTER" spacing="4">
+                            <Label fx:id="statBookings"      styleClass="stat-number"        text="0" />
+                            <Label styleClass="stat-label"   text="ACTIVE BOOKINGS" />
+                        </VBox>
+                    </HBox>
+
+                    <Label styleClass="card-title" text="Recent Activity" style="-fx-padding: 10 0 0 0;" />
+                    <ListView fx:id="recentActivityList" prefHeight="300" />
+                </VBox>
+
+                <!-- ─── ROOMS PANE ──────────────────────────────────── -->
+                <VBox fx:id="paneRooms" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="Room Management" />
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+                        <!-- Add Room Card -->
+                        <VBox styleClass="card" spacing="12" prefWidth="280">
+                            <Label styleClass="card-title" text="Add New Room" />
+                            <Label styleClass="section-label" text="ROOM NUMBER" />
+                            <TextField fx:id="roomNumInput"   promptText="e.g. 101" />
+                            <Label styleClass="section-label" text="ROOM TYPE" />
+                            <ComboBox fx:id="roomTypeCombo"   prefWidth="240" promptText="Select type" />
+                            <Label styleClass="section-label" text="PRICE PER NIGHT (₹)" />
+                            <TextField fx:id="roomPriceInput" promptText="e.g. 2500" />
+                            <Button text="+ Add Room" maxWidth="1.7976931348623157E308" onAction="#handleAddRoom" />
+                            <Separator />
+                            <Label styleClass="card-title" text="Remove Room" />
+                            <Label styleClass="section-label" text="SELECT ROOM" />
+                            <ComboBox fx:id="removeRoomCombo" prefWidth="240" promptText="Select room to remove" />
+                            <Button text="🗑  Remove Room" maxWidth="1.7976931348623157E308"
+                                    styleClass="btn-danger" onAction="#handleRemoveRoom" />
+                        </VBox>
+
+                        <!-- Room Table -->
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="All Rooms" />
+                            <TableView fx:id="roomTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="roomColNum"   text="Room No." prefWidth="90" />
+                                    <TableColumn fx:id="roomColType"  text="Type"     prefWidth="110" />
+                                    <TableColumn fx:id="roomColPrice" text="Price/Night" prefWidth="120" />
+                                    <TableColumn fx:id="roomColAvail" text="Status"   prefWidth="130" />
+                                </columns>
+                                <placeholder><Label styleClass="label-muted" text="No rooms added yet." /></placeholder>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── CUSTOMERS PANE ──────────────────────────────── -->
+                <VBox fx:id="paneCustomers" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="Customer Management" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="280">
+                            <Label styleClass="card-title" text="Add Customer" />
+                            <Label styleClass="section-label" text="FULL NAME" />
+                            <TextField fx:id="custNameInput"  promptText="Full name" />
+                            <Label styleClass="section-label" text="PHONE NUMBER" />
+                            <TextField fx:id="custPhoneInput" promptText="+91 XXXXX XXXXX" />
+                            <Label styleClass="section-label" text="EMAIL ADDRESS" />
+                            <TextField fx:id="custEmailInput" promptText="email@example.com" />
+                            <Button text="+ Add Customer" maxWidth="1.7976931348623157E308" onAction="#handleAddCustomer" />
+                            <Separator />
+                            <Label styleClass="card-title" text="Remove Customer" />
+                            <ComboBox fx:id="removeCustomerCombo" prefWidth="240" promptText="Select customer" />
+                            <Button text="🗑  Remove Customer" maxWidth="1.7976931348623157E308"
+                                    styleClass="btn-danger" onAction="#handleRemoveCustomer" />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="All Customers" />
+                            <TableView fx:id="customerTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="custColId"    text="ID"    prefWidth="70" />
+                                    <TableColumn fx:id="custColName"  text="Name"  prefWidth="160" />
+                                    <TableColumn fx:id="custColPhone" text="Phone" prefWidth="140" />
+                                    <TableColumn fx:id="custColEmail" text="Email" prefWidth="200" />
+                                </columns>
+                                <placeholder><Label styleClass="label-muted" text="No customers added yet." /></placeholder>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── BOOKINGS PANE ───────────────────────────────── -->
+                <VBox fx:id="paneBookings" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="Room Bookings" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="300">
+                            <Label styleClass="card-title" text="New Booking" />
+                            <Label styleClass="section-label" text="SELECT CUSTOMER" />
+                            <ComboBox fx:id="bookCustCombo" prefWidth="260" promptText="Choose customer" />
+                            <Label styleClass="section-label" text="SELECT ROOM" />
+                            <ComboBox fx:id="bookRoomCombo" prefWidth="260" promptText="Available rooms" />
+                            <Label styleClass="section-label" text="CHECK-IN DATE" />
+                            <DatePicker fx:id="checkInPicker" prefWidth="260" promptText="Select date" />
+                            <Button text="✓  Confirm Booking" maxWidth="1.7976931348623157E308"
+                                    styleClass="btn-green" onAction="#handleBookRoom" />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="Active Bookings" />
+                            <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="bkColId"      text="Booking ID" prefWidth="150" />
+                                    <TableColumn fx:id="bkColRoom"    text="Room"       prefWidth="80" />
+                                    <TableColumn fx:id="bkColGuest"   text="Guest"      prefWidth="160" />
+                                    <TableColumn fx:id="bkColCheckIn" text="Check-In"   prefWidth="110" />
+                                    <TableColumn fx:id="bkColStatus"  text="Status"     prefWidth="100" />
+                                </columns>
+                                <placeholder><Label styleClass="label-muted" text="No active bookings." /></placeholder>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── FOOD SERVICE PANE ───────────────────────────── -->
+                <VBox fx:id="paneFood" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="🍽️  Food Service" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="300">
+                            <Label styleClass="card-title" text="Place Food Order" />
+                            <Label styleClass="section-label" text="SELECT BOOKING (ROOM)" />
+                            <ComboBox fx:id="foodBookingCombo" prefWidth="260" promptText="Active booking" />
+                            <Label styleClass="section-label" text="MENU ITEM" />
+                            <ComboBox fx:id="foodItemCombo" prefWidth="260" promptText="Select dish" />
+                            <Label styleClass="section-label" text="QUANTITY" />
+                            <Spinner fx:id="foodQtySpinner" prefWidth="260" min="1" max="20" initialValue="1"
+                                     editable="true" />
+                            <Button text="+ Add Order" maxWidth="1.7976931348623157E308" onAction="#handleAddFood" />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="Current Orders for Selected Room" />
+                            <ListView fx:id="foodOrderList" VBox.vgrow="ALWAYS" />
+                            <Label fx:id="foodTotalLabel" styleClass="success-label"
+                                   text="Food Total: ₹0" style="-fx-font-weight:bold;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── LAUNDRY PANE ────────────────────────────────── -->
+                <VBox fx:id="paneLaundry" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="👕  Laundry Service" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="300">
+                            <Label styleClass="card-title" text="Add Laundry Request" />
+                            <Label styleClass="section-label" text="SELECT BOOKING (ROOM)" />
+                            <ComboBox fx:id="laundryBookingCombo" prefWidth="260" promptText="Active booking" />
+                            <Label styleClass="section-label" text="CLOTHING ITEM" />
+                            <ComboBox fx:id="laundryItemCombo" prefWidth="260" promptText="Select item" />
+                            <Label styleClass="section-label" text="QUANTITY" />
+                            <Spinner fx:id="laundryQtySpinner" prefWidth="260" min="1" max="50" initialValue="1"
+                                     editable="true" />
+                            <Button text="+ Add Laundry" maxWidth="1.7976931348623157E308" onAction="#handleAddLaundry" />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="Laundry Items for Selected Room" />
+                            <ListView fx:id="laundryOrderList" VBox.vgrow="ALWAYS" />
+                            <Label fx:id="laundryTotalLabel" styleClass="success-label"
+                                   text="Laundry Total: ₹0" style="-fx-font-weight:bold;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── CHECKOUT PANE ───────────────────────────────── -->
+                <VBox fx:id="paneCheckout" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="💳  Checkout &amp; Billing" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="300">
+                            <Label styleClass="card-title" text="Initiate Checkout" />
+                            <Label styleClass="section-label" text="SELECT BOOKING" />
+                            <ComboBox fx:id="checkoutBookingCombo" prefWidth="260" promptText="Active booking" />
+                            <Label styleClass="section-label" text="CHECK-OUT DATE" />
+                            <DatePicker fx:id="checkOutPicker" prefWidth="260" />
+                            <Button fx:id="checkoutBtn" text="🏃  Process Checkout" maxWidth="1.7976931348623157E308"
+                                    styleClass="btn-danger" onAction="#handleCheckout" />
+                            <Separator />
+                            <Label styleClass="card-title" text="Checkout Progress" />
+                            <TextArea fx:id="checkoutStepsArea" styleClass="checkout-steps"
+                                      editable="false" prefHeight="160" wrapText="true"
+                                      promptText="Steps will appear here..." />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="Itemised Bill" />
+                            <TextArea fx:id="billDisplayArea" styleClass="bill-text"
+                                      editable="false" VBox.vgrow="ALWAYS" wrapText="true"
+                                      promptText="Bill will be generated after checkout..." />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ─── AUDIT LOG PANE ──────────────────────────────── -->
+                <VBox fx:id="paneAudit" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="📋  Audit Log" />
+                    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="12">
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <Label styleClass="card-title" text="System Activity Log" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="🔄  Refresh" styleClass="btn-secondary"
+                                    style="-fx-font-size:12px; -fx-padding:6 14;"
+                                    onAction="#refreshAudit" />
+                        </HBox>
+                        <TableView fx:id="auditTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="auditColTime"   text="Timestamp"    prefWidth="170" />
+                                <TableColumn fx:id="auditColUser"   text="Performed By" prefWidth="140" />
+                                <TableColumn fx:id="auditColAction" text="Action"        prefWidth="150" />
+                                <TableColumn fx:id="auditColDetail" text="Details"       prefWidth="450" />
+                            </columns>
+                            <placeholder><Label styleClass="label-muted" text="No audit entries yet." /></placeholder>
+                        </TableView>
+                    </VBox>
+                </VBox>
+
+                <!-- ─── STAFF MANAGEMENT PANE ──────────────────────── -->
+                <VBox fx:id="paneStaff" styleClass="content-area" spacing="20" visible="false" managed="false">
+                    <Label styleClass="page-title" text="👥  Staff Management" />
+                    <HBox spacing="20">
+
+                        <VBox styleClass="card" spacing="12" prefWidth="300">
+                            <Label styleClass="card-title" text="Create Staff Account" />
+                            <Label styleClass="section-label" text="DISPLAY NAME" />
+                            <TextField fx:id="staffNameInput"     promptText="e.g. Priya Sharma" />
+                            <Label styleClass="section-label" text="USERNAME" />
+                            <TextField fx:id="staffUserInput"     promptText="e.g. priya.s" />
+                            <Label styleClass="section-label" text="PASSWORD" />
+                            <PasswordField fx:id="staffPassInput" promptText="Set password" />
+                            <Label styleClass="section-label" text="ROLE" />
+                            <ComboBox fx:id="staffRoleCombo" prefWidth="260" promptText="Select role" />
+                            <Button text="+ Create Account" maxWidth="1.7976931348623157E308" onAction="#handleAddStaff" />
+                            <Separator />
+                            <Label styleClass="card-title" text="Remove Staff" />
+                            <ComboBox fx:id="removeStaffCombo" prefWidth="260" promptText="Select user to remove" />
+                            <Button text="🗑  Remove User" maxWidth="1.7976931348623157E308"
+                                    styleClass="btn-danger" onAction="#handleRemoveStaff" />
+                        </VBox>
+
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="12">
+                            <Label styleClass="card-title" text="All System Users" />
+                            <TableView fx:id="staffTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="staffColName"     text="Display Name" prefWidth="200" />
+                                    <TableColumn fx:id="staffColUsername" text="Username"      prefWidth="150" />
+                                    <TableColumn fx:id="staffColRole"     text="Role"          prefWidth="100" />
+                                </columns>
+                                <placeholder><Label styleClass="label-muted" text="No users." /></placeholder>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

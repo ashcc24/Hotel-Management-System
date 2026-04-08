@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<StackPane styleClass="login-root" prefWidth="900" prefHeight="600"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.hotel.management.controllers.LoginController">
+
+    <VBox alignment="CENTER" spacing="0">
+        <VBox styleClass="login-card" alignment="CENTER" spacing="8" maxWidth="420">
+
+            <!-- Logo + Name -->
+            <Label styleClass="login-logo" text="🏨" />
+            <Label styleClass="login-hotel-name" text="THE SAPPHIRE HOTEL" />
+            <Label styleClass="login-subtitle" text="Management System — Staff Portal" />
+
+            <Region prefHeight="24" />
+
+            <!-- Username -->
+            <VBox spacing="6" maxWidth="320" fillWidth="true">
+                <Label styleClass="login-field-label" text="USERNAME" />
+                <TextField fx:id="usernameInput" prefWidth="320" promptText="Enter username" styleClass="text-field" />
+            </VBox>
+
+            <Region prefHeight="10" />
+
+            <!-- Password -->
+            <VBox spacing="6" maxWidth="320" fillWidth="true">
+                <Label styleClass="login-field-label" text="PASSWORD" />
+                <PasswordField fx:id="passwordInput" prefWidth="320" promptText="Enter password" />
+            </VBox>
+
+            <Region prefHeight="6" />
+
+            <!-- Error -->
+            <Label fx:id="errorLabel" styleClass="login-error" text="" wrapText="true" maxWidth="320" />
+
+            <Region prefHeight="10" />
+
+            <!-- Login Button -->
+            <Button fx:id="loginBtn" text="Sign In" prefWidth="320" prefHeight="42"
+                    onAction="#handleLogin" />
+
+            <Region prefHeight="16" />
+
+            <Label styleClass="login-subtitle"
+                   text="Default admin: admin / admin123" />
+
+        </VBox>
+    </VBox>
+</StackPane>
